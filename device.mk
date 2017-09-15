@@ -179,6 +179,7 @@ PRODUCT_PACKAGES += \
     libmmcamera_interface \
     libmmjpeg_interface
 
+
 # Shims
 PRODUCT_PACKAGES += \
     libshims_camera \
