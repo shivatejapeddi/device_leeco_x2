@@ -33,9 +33,6 @@
 // System dependencies
 #include <utils/Errors.h>
 
-// Display dependencies
-#include "QServiceUtils.h"
-
 namespace qcamera {
 
 inline android::status_t setCameraLaunchStatus(uint32_t on) {
