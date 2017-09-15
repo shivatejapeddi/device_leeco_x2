@@ -177,8 +177,7 @@ PRODUCT_PACKAGES += \
     libstlport \
     libqomx_core \
     libmmcamera_interface \
-    libmmjpeg_interface \
-    libmm-qcamera
+    libmmjpeg_interface
 
 
 # Shims
