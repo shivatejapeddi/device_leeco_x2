@@ -1,5 +1,33 @@
 <manifest version="1.0" type="device">
     <hal format="hidl">
+        <name>android.hardware.audio</name>
+        <transport>hwbinder</transport>
+        <version>2.0</version>
+        <interface>
+            <name>IDevicesFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.audio.effect</name>
+        <transport>hwbinder</transport>
+        <version>2.0</version>
+        <interface>
+            <name>IEffectsFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.biometrics.fingerprint</name>
+        <transport>hwbinder</transport>
+        <version>2.1</version>
+        <interface>
+            <name>IBiometricsFingerprint</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+<!--
+    <hal format="hidl">
         <name>android.hardware.bluetooth</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
@@ -8,6 +36,7 @@
             <instance>default</instance>
         </interface>
     </hal>
+-->
     <hal format="hidl">
         <name>android.hardware.configstore</name>
         <transport>hwbinder</transport>
@@ -23,7 +52,7 @@
         <version>1.0</version>
         <interface>
             <name>IGatekeeper</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -32,7 +61,7 @@
         <version>2.0</version>
         <interface>
             <name>IAllocator</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -50,9 +79,10 @@
         <version>2.1</version>
         <interface>
             <name>IComposer</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
+<!--
     <hal format="hidl">
         <name>android.hardware.ir</name>
         <transport>hwbinder</transport>
@@ -62,13 +92,14 @@
             <instance>msm8996</instance>
         </interface>
     </hal>
+-->
     <hal format="hidl">
         <name>android.hardware.keymaster</name>
         <transport>hwbinder</transport>
         <version>3.0</version>
         <interface>
             <name>IKeymasterDevice</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -77,7 +108,20 @@
         <version>2.0</version>
         <interface>
             <name>ILight</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
+        </interface>
+    </hal>
+     <hal format="hidl">
+        <name>android.hardware.media.omx</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IOmx</name>
+            <instance>default</instance>
+        </interface>
+        <interface>
+            <name>IOmxStore</name>
+            <instance>default</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -86,7 +130,7 @@
         <version>1.0</version>
         <interface>
             <name>IMemtrack</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -95,7 +139,7 @@
         <version>1.0</version>
         <interface>
             <name>IPower</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -113,7 +157,7 @@
         <version>1.0</version>
         <interface>
             <name>ISensors</name>
-            <instance>msm8996</instance>
+            <instance>msm8998</instance>
         </interface>
     </hal>
     <hal format="hidl">

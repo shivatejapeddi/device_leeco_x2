@@ -42,7 +42,7 @@ on early-init
     write /sys/block/zram0/comp_algorithm lz4
 
 on init
-    export LD_SHIM_LIBS "/system/lib/hw/camera.msm8996.so|libcamera_shim.so:/system/bin/mm-qcamera-daemon|qcamera-daemon_shim.so:/system/vendor/lib64/libizat_core.so|libshims_get_process_name.so:/system/vendor/lib64/libril-qc-qmi-1.so|rild_socket.so"
+    export LD_SHIM_LIBS "/system/lib/hw/camera.msm8996.so|libshims_camera.so:/system/bin/mm-qcamera-daemon|libshims_qcamera-daemon.so:/system/vendor/lib64/libizat_core.so|libshims_get_process_name.so"
 
     # Set permissions for persist partition
     mkdir /persist 0771 system system
@@ -57,6 +57,16 @@ on init
     chown root system /sys/fs/cgroup/memory/bg/tasks
     chmod 0660 /sys/fs/cgroup/memory/bg/tasks
 
+on late-fs
+    # boot time fs tune
+    write /sys/block/sda/queue/iostats 0
+    write /sys/block/sda/queue/scheduler cfq
+    write /sys/block/sda/queue/iosched/slice_idle 0
+    write /sys/block/sda/queue/read_ahead_kb 2048
+    write /sys/block/sda/queue/nr_requests 256
+    write /sys/block/dm-0/queue/read_ahead_kb 2048
+    write /sys/block/dm-1/queue/read_ahead_kb 2048
+
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -65,11 +75,6 @@ on fs
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-
-    # set aggressive read ahead during boot up.
-    write /sys/block/dm-0/queue/read_ahead_kb 2048
-    write /sys/block/sda/queue/read_ahead_kb 2048
-    write /sys/block/sde/queue/read_ahead_kb 2048
 
     # Allow subsystem (modem etc) debugging
     write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
@@ -561,13 +566,13 @@ service imsqmidaemon /system/bin/imsqmidaemon
     group radio net_raw log diag
     writepid /dev/cpuset/system-background/tasks
 
-#service imsdatadaemon /system/bin/imsdatadaemon
-#    class main
-#    user system
-#    socket ims_datad stream 0660 system radio
-#    group system wifi radio inet net_raw log diag net_admin
-#    writepid /dev/cpuset/system-background/tasks
-#    disabled
+service imsdatadaemon /system/bin/imsdatadaemon
+    class main
+    user system
+    socket ims_datad stream 0660 system radio
+    group system wifi radio inet net_raw log diag net_admin
+    writepid /dev/cpuset/system-background/tasks
+    disabled
 
 service pd_mapper /system/vendor/bin/pd-mapper
     class core
@@ -580,8 +585,8 @@ on property:persist.sys.pd_enable=1
 on property:persist.sys.pd_enable=0
     write /sys/class/service_locator/service_locator_status 0
 
-#on property:sys.ims.QMI_DAEMON_STATUS=1
-#    start imsdatadaemon
+on property:sys.ims.QMI_DAEMON_STATUS=1
+    start imsdatadaemon
 
 service ims_rtp_daemon /system/bin/ims_rtp_daemon
     class main
@@ -740,16 +745,16 @@ on property:vold.decrypt=trigger_restart_framework
 on property:persist.env.fastdorm.enabled=true
     setprop persist.radio.data_no_toggle 1
 
-#service cnd /system/bin/cnd
-#    class main
-#    socket cnd stream 660 root inet
-#    group root
-#    writepid /dev/cpuset/system-background/tasks
+service cnd /system/bin/cnd
+    class main
+    socket cnd stream 660 root inet
+    group root
+    writepid /dev/cpuset/system-background/tasks
 
-#service dpmd /system/bin/dpmd
-#    class late_start
-#    socket dpmd stream 660 root system
-#    writepid /dev/cpuset/system-background/tasks
+service dpmd /system/bin/dpmd
+    class late_start
+    socket dpmd stream 660 root system
+    writepid /dev/cpuset/system-background/tasks
 
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
     class core
@@ -759,13 +764,13 @@ service irsc_util /system/bin/irsc_util "/etc/sec_config"
 service rmt_storage /system/bin/rmt_storage
     class core
     user root
-    group system
+    group root system wakelock
     writepid /dev/cpuset/system-background/tasks
 
-#service tftp_server /system/bin/tftp_server
-#    class main
-#    user root
-#    writepid /dev/cpuset/system-background/tasks
+service tftp_server /system/bin/tftp_server
+    class main
+    user root
+    writepid /dev/cpuset/system-background/tasks
 
 on property:wc_transport.start_hci=true
     start start_hci_filter
@@ -852,7 +857,7 @@ service btsnoop /system/bin/btsnoop
 service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
     class late_start
     user root
-    group bluetooth net_bt_admin misc net_bt_stack diag net_bt
+    group bluetooth net_bt_admin misc diag net_bt
     disabled
     oneshot
 
@@ -876,10 +881,11 @@ service qmuxd /system/bin/qmuxd
     group radio audio bluetooth gps nfc diag
     writepid /dev/cpuset/system-background/tasks
 
-#service netmgrd /system/bin/netmgrd
-#    class main
-#    group radio system
-#    writepid /dev/cpuset/system-background/tasks
+service netmgrd /system/bin/netmgrd
+    class main
+    user root
+    group root wifi wakelock radio inet
+    writepid /dev/cpuset/system-background/tasks
 
 service ipacm-diag /system/bin/ipacm-diag
     class main
@@ -1049,14 +1055,14 @@ service battery_monitor /system/bin/battery_monitor
 
 service ril-daemon /vendor/bin/hw/rild
     class main
-    user root
-    group radio cache inet misc audio sdcard_r sdcard_rw diag diag log net_raw
+    user radio
+    group radio cache inet misc audio log readproc wakelock qcom_diag net_raw
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
 
-service ril-daemon2 /vendor/bin/rild -c 2
+service ril-daemon2 /vendor/bin/hw/rild -c 2
     class main
     user radio
-    group radio cache inet misc audio log readproc wakelock
+    group radio cache inet misc audio log readproc wakelock qcom_diag net_raw
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
 
 service usb_uicc_enable /system/bin/sh /system/etc/init.qcom.uicc.sh
