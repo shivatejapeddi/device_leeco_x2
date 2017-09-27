@@ -177,7 +177,8 @@ PRODUCT_PACKAGES += \
     libcamera_shim \
     libshims_get_process_name \
     libshims_rild_socket \
-    libshims_qcamera-daemon
+    libshims_qcamera-daemon \
+    libshim_camera
 
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
