@@ -167,6 +167,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Camera2 \
     android.hardware.camera.provider@2.4-impl-shiva \
+    camera.device@1.0-impl-shiva \
     Snap
 
 # Shims
