@@ -167,8 +167,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Camera2 \
     android.hardware.camera.provider@2.4-impl.legacy \
-    camera.device@3.2-impl \
-    Snap
+    camera.device@3.2-impl
 
 # Shims
 PRODUCT_PACKAGES += \
@@ -182,7 +181,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     cneapiclient \
     com.quicinc.cne \
-    services-ext
+    camera.msm8996
 
 # Display
 PRODUCT_PACKAGES += \
