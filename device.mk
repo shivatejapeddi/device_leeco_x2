@@ -180,8 +180,8 @@ PRODUCT_PACKAGES += \
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     cneapiclient \
-    com.quicinc.cne \
-    camera.msm8996
+    com.quicinc.cne
+
 
 # Display
 PRODUCT_PACKAGES += \
