@@ -202,9 +202,11 @@ PRODUCT_PACKAGES += \
     gralloc.msm8996 \
     hwcomposer.msm8996 \
     memtrack.msm8996 \
+    memtrack.msm8996 \
     libgenlock \
     liboverlay \
-    libtinyxml
+    libtinyxml \
+    libgpustats
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/FOSSConfig.xml:system/etc/FOSSConfig.xml
