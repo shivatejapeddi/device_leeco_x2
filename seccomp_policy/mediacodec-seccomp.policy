@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4031ec8... Switch to Oreo caf hals
 # device specific syscalls
 # extension of services/mediacodec/minijail/seccomp_policy/mediacodec-seccomp-arm.policy
 pselect6: 1
