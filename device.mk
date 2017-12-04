@@ -211,8 +211,8 @@ PRODUCT_PACKAGES += \
     qdcm_calib_data_mdss_dsi_sharp_qhd_dualdsi_cmd.xml
 
 # Doze mode
-#PRODUCT_PACKAGES += \
-#    Doze
+PRODUCT_PACKAGES += \
+    Doze
 
 # DRM
 PRODUCT_PACKAGES += \
